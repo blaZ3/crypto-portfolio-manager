@@ -1,7 +1,12 @@
 import React, {useState, FormEvent} from 'react'
 import {Pane, minorScale, Button, majorScale, TextInput} from 'evergreen-ui'
 
+import {getCoinValue} from '../../services/CoinbaseService'
+
 export default function Coins() {
+
+    let [currency,
+        setCurrecny] = useState("USD")
 
     let [coins,
         setCoins] = useState < String[] > ([])
@@ -22,8 +27,17 @@ export default function Coins() {
                 <Button
                     marginLeft={majorScale(1)}
                     onClick={() => {
-                    setCoins(coins.concat(currCoinInput));
-                    setCurrCoinInput("")
+                    getCoinValue(currCoinInput, currency).then((response) => {
+                        if (response.ok) {
+                            response
+                                .json()
+                                .then((json) => {
+                                    console.log(json);
+                                    setCoins(coins.concat(currCoinInput));
+                                    setCurrCoinInput("")
+                                })
+                        }
+                    });
                 }}>Add</Button>
             </Pane>
             <hr/> {coins.map((coin) => (
@@ -35,6 +49,6 @@ export default function Coins() {
 
 function Coin(coin : String) {
     return (
-        <p>{coin}</p>
+        <p >{coin}</p>
     )
 }
