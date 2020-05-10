@@ -2,7 +2,7 @@ import React, {useState} from 'react'
 import {Pane} from 'evergreen-ui'
 
 import Topbar from '../topbar/Topbar'
-import Coins from '../coins/Coins'
+import PortfolioCoins from '../coins/Coins'
 import Portfolio from '../portfolio/Portfolio'
 
 export default function Manager() {
@@ -18,7 +18,7 @@ export default function Manager() {
                     height='100%'
                     border='default'>
                     <Pane width="20%" height='100%' border='default'>
-                        <Coins/>
+                        <PortfolioCoins />
                     </Pane>
                     <Pane width="80%" height='100%' border='default'>
                         <Portfolio/>
