@@ -5,10 +5,13 @@ import {
     Button,
     majorScale,
     TextInput,
-    Text
+    Text,    
+    IconButton,
+    Tooltip
 } from 'evergreen-ui'
 
 import {getCoinBuyPrice, getCoinSellPrice, getCoinSpotPrice} from '../../services/CoinbaseService'
+import {saveCurrentPortfolio, getCurrentPortfolio} from '../../repositories/PortfolioRepo'
 
 import {Coin} from '../../models'
 
@@ -27,6 +30,10 @@ export default function PortfolioCoins() {
         let defaultCoinMaps = new Map < String,
             Coin > ();
         // defaultCoinMaps.set("DMC", defCoin);
+
+        useEffect(() => {
+            setCoins(getCurrentPortfolio());
+        }, [])
 
         let [coins,
                 setCoins] = useState < Map < String,
@@ -60,12 +67,14 @@ export default function PortfolioCoins() {
                 coins
                     ?.set(json.base, coinData);
                 setCoins(coins);
+                saveCurrentPortfolio(coins)
 
                 getCoinSellPrice(coin, currency).then((json) => {
                     coinData !!.sellPrice = json.amount;
                     coins
                         ?.set(json.base, coinData !!);
                     setCoins(coins);
+                    saveCurrentPortfolio(coins)
                 })
 
                 getCoinSpotPrice(coin, currency).then((json) => {
@@ -73,6 +82,7 @@ export default function PortfolioCoins() {
                     coins
                         ?.set(json.base, coinData !!);
                     setCoins(coins);
+                    saveCurrentPortfolio(coins)
                 })
 
                 setCurrCoinInput("");
@@ -85,7 +95,12 @@ export default function PortfolioCoins() {
 
         return (
             <div>
-                <h3>Coins</h3>
+                <Pane alignItems="center" justifyContent="center" display="flex">
+                    <Text margin={minorScale(2)}>Coins</Text>
+                    <Tooltip content="Refresh coin values">
+                        <IconButton icon="refresh"/>
+                    </Tooltip>
+                </Pane>
                 <hr/>
                 <Pane>
                     <Pane display="flex" flex={1} padding={minorScale(2)}>
@@ -132,9 +147,6 @@ export default function PortfolioCoins() {
                         {coin.currency}
                     </Text>
                     <Text>Sell: {coin.sellPrice}
-                        {coin.currency}
-                    </Text>
-                    <Text>Spot: {coin.spotPrice}
                         {coin.currency}
                     </Text>
                 </Pane>
