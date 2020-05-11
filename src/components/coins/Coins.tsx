@@ -5,7 +5,7 @@ import {
     Button,
     majorScale,
     TextInput,
-    Text,    
+    Text,
     IconButton,
     Tooltip
 } from 'evergreen-ui'
@@ -32,7 +32,9 @@ export default function PortfolioCoins() {
         // defaultCoinMaps.set("DMC", defCoin);
 
         useEffect(() => {
-            setCoins(getCurrentPortfolio());
+            getCurrentPortfolio().forEach((value, key) => {
+                fetchCoinDetails(key);
+            });
         }, [])
 
         let [coins,
@@ -46,9 +48,7 @@ export default function PortfolioCoins() {
             setAddCoinError] = useState(undefined);
 
         let fetchCoinDetails = (coin : String) => {
-            setAddCoinError(undefined);
             getCoinBuyPrice(coin, currency).then((json) => {
-
                 let coinData : Coin | undefined = coins
                     ?.get(json.base);
                 if (coinData !== undefined) {
@@ -64,28 +64,23 @@ export default function PortfolioCoins() {
                     }
                 }
 
-                coins
-                    ?.set(json.base, coinData);
-                setCoins(coins);
-                saveCurrentPortfolio(coins)
+                setCoins(new Map(coins
+                    ?.set(json.base, coinData)));
+                saveCurrentPortfolio(coins);
 
                 getCoinSellPrice(coin, currency).then((json) => {
                     coinData !!.sellPrice = json.amount;
-                    coins
-                        ?.set(json.base, coinData !!);
-                    setCoins(coins);
+                    setCoins(new Map(coins
+                        ?.set(json.base, coinData !!)));
                     saveCurrentPortfolio(coins)
-                })
+                });
 
                 getCoinSpotPrice(coin, currency).then((json) => {
                     coinData !!.spotPrice = json.amount;
-                    coins
-                        ?.set(json.base, coinData !!);
-                    setCoins(coins);
+                    setCoins(new Map(coins
+                        ?.set(json.base, coinData !!)));
                     saveCurrentPortfolio(coins)
-                })
-
-                setCurrCoinInput("");
+                });
             }).catch((err) => {
                 console.log(err);
                 setAddCoinError(err);
@@ -98,8 +93,12 @@ export default function PortfolioCoins() {
                 <Pane alignItems="center" justifyContent="center" display="flex">
                     <Text margin={minorScale(2)}>Coins</Text>
                     <Tooltip content="Refresh coin values">
-                        <IconButton icon="refresh" onClick={() => {
-                            coins.forEach((value, key) => {fetchCoinDetails(key)})
+                        <IconButton
+                            icon="refresh"
+                            onClick={() => {
+                            coins.forEach((value, key) => {
+                                fetchCoinDetails(key)
+                            })
                         }}/>
                     </Tooltip>
                 </Pane>
@@ -114,7 +113,9 @@ export default function PortfolioCoins() {
                         <Button
                             marginLeft={majorScale(1)}
                             onClick={() => {
+                            setAddCoinError(undefined);
                             fetchCoinDetails(currCoinInput);
+                            setCurrCoinInput("");
                         }}>Add</Button>
                     </Pane>
                     <Text color="danger">{addCoinError !== undefined && addCoinError}</Text>
