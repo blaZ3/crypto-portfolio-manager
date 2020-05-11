@@ -98,7 +98,9 @@ export default function PortfolioCoins() {
                 <Pane alignItems="center" justifyContent="center" display="flex">
                     <Text margin={minorScale(2)}>Coins</Text>
                     <Tooltip content="Refresh coin values">
-                        <IconButton icon="refresh"/>
+                        <IconButton icon="refresh" onClick={() => {
+                            coins.forEach((value, key) => {fetchCoinDetails(key)})
+                        }}/>
                     </Tooltip>
                 </Pane>
                 <hr/>
