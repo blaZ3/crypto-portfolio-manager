@@ -15,7 +15,7 @@ import {saveCurrentPortfolio, getCurrentPortfolio} from '../../repositories/Port
 
 import {Coin} from '../../models'
 
-export default function PortfolioCoins() {
+export default function PortfolioCoins(props: any) {
 
     let [currency] = useState("EUR");
 
@@ -121,7 +121,7 @@ export default function PortfolioCoins() {
                     <Text color="danger">{addCoinError !== undefined && addCoinError}</Text>
                 </Pane>
                 <hr/> {coins !== undefined && getCoinsView(coins).map((coin) => {
-                    return CoinView(coin)
+                    return CoinView(coin, props.onCoinSelected)
                 })}
             </div>
         )
@@ -135,7 +135,7 @@ export default function PortfolioCoins() {
         return coinArr;
     }
 
-    function CoinView(coin : Coin) {
+    function CoinView(coin : Coin, onSelected : (coin : Coin) => void) {
         return (
             <Pane
                 display="flex"
@@ -143,7 +143,10 @@ export default function PortfolioCoins() {
                 margin={minorScale(2)}
                 padding={minorScale(1)}
                 background="greenTint"
-                borderRadis={4}>
+                borderRadis={4}
+                onClick={() => {
+                onSelected(coin)
+            }}>
                 {coin.symbol}
                 <Pane display="flex" justifyContent="left" flexDirection="column">
                     <Text>Buy: {coin.buyPrice}
