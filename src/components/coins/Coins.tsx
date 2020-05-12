@@ -15,7 +15,7 @@ import {saveCurrentPortfolio, getCurrentPortfolio} from '../../repositories/Port
 
 import {Coin} from '../../models'
 
-export default function PortfolioCoins(props: any) {
+export default function PortfolioCoins(props : any) {
 
     let [currency] = useState("EUR");
 
@@ -32,9 +32,11 @@ export default function PortfolioCoins(props: any) {
         // defaultCoinMaps.set("DMC", defCoin);
 
         useEffect(() => {
-            getCurrentPortfolio().forEach((value, key) => {
+            let portfolios = getCurrentPortfolio();
+            portfolios.forEach((value, key) => {
                 fetchCoinDetails(key);
             });
+            props.onCoinSelected(portfolios.values().next().value);
         }, [])
 
         let [coins,
