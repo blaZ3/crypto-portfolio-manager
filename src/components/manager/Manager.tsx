@@ -1,18 +1,52 @@
-import React, {useState} from 'react'
-import {Pane} from 'evergreen-ui'
+import React, {useState, useEffect} from 'react'
+import {Pane, Dialog, TextInputField, Button} from 'evergreen-ui'
 
 import Topbar from '../topbar/Topbar'
 import PortfolioCoins from '../coins/Coins'
 import Portfolio from '../portfolio/Portfolio'
-import {Coin} from '../../models'
+import {Coin, User} from '../../models'
+
+import {getUser, saveUser} from '../../repositories/UserRepository'
 
 export default function Manager() {
 
     let [selectedCoin,
-        setSelectedCoin] = useState < Coin | undefined > (undefined)
+        setSelectedCoin] = useState < Coin | undefined > (undefined);
+
+    let [showUserDialog,
+        setShowUserDialog] = useState(false);
+
+    useEffect(() => {
+        getUser().then((user : User | undefined) => {
+            if (user !== undefined) {
+                setShowUserDialog(false);
+            } else {
+                setShowUserDialog(true);
+            }
+        }).catch((err) => {
+            console.log(err);
+        });
+    }, []);
 
     return (
         <Pane display="flex" width='100%' height='100%' justifyContent="center">
+
+            <Dialog
+                isShown={showUserDialog}
+                title="Add user info!"
+                onCloseComplete={() => setShowUserDialog(false)}
+                hasFooter={false}
+                hasClose={false}            
+                shouldCloseOnEscapePress={false}
+                shouldCloseOnOverlayClick={false}>
+
+                <TextInputField placeholder="Name"/>
+                <TextInputField placeholder="Currency: EUR, USD etc."/>
+                <TextInputField placeholder="Default coin: BTC, ETH etc."/>
+
+                <Button appearance="primary">Save</Button>
+
+            </Dialog>
 
             <Pane display="flex" width='70%' height='100%' flexDirection='column'>
                 <Topbar/>

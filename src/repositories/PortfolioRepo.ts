@@ -31,6 +31,12 @@ export function saveCurrentPortfolio(portfolio : Map < String, Coin >) : Promise
             portfolioData.push(value);
         });
         let portfolioJson = JSON.stringify(portfolioData);
-        localStorage.setItem(KEY_PORTFOLIO, portfolioJson);
+
+        try {
+            localStorage.setItem(KEY_PORTFOLIO, portfolioJson);
+            resolve(true);
+        } catch (e) {
+            reject();
+        }
     })
 }
