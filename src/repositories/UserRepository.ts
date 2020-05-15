@@ -24,7 +24,7 @@ export function saveUser(user : User) : Promise < boolean > {
             resolve(true);
             return;
         } catch (ex) {
-            reject();
+            reject("Failed to add user details");
         }
     })
 }
