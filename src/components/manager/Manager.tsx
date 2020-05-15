@@ -34,9 +34,8 @@ export default function Manager() {
             <Dialog
                 isShown={showUserDialog}
                 title="Add user info!"
-                onCloseComplete={() => setShowUserDialog(false)}
                 hasFooter={false}
-                hasClose={false}            
+                hasClose={false}
                 shouldCloseOnEscapePress={false}
                 shouldCloseOnOverlayClick={false}>
 
@@ -44,7 +43,11 @@ export default function Manager() {
                 <TextInputField placeholder="Currency: EUR, USD etc."/>
                 <TextInputField placeholder="Default coin: BTC, ETH etc."/>
 
-                <Button appearance="primary">Save</Button>
+                <Button
+                    appearance="primary"
+                    onClick={() => {
+                    setShowUserDialog(false)
+                }}>Save</Button>
 
             </Dialog>
 
