@@ -12,7 +12,7 @@ export function getUser() : Promise < User | undefined > {
                 resolve(undefined);
             }
         } catch (e) {
-            reject();
+            reject("Failed to get user");
         }
     });
 }

@@ -13,13 +13,19 @@ export default function Manager() {
     let [selectedCoin,
         setSelectedCoin] = useState < Coin | undefined > (undefined);
 
+    let [showUserDialog,
+        setShowUserDialog] = useState(false);
+
     return (
         <Pane display="flex" width='100%' height='100%' justifyContent="center">
 
-            <UserDetails />
+            <UserDetails showUserDialog={showUserDialog}/>
 
             <Pane display="flex" width='70%' height='100%' flexDirection='column'>
-                <Topbar/>
+                <Topbar
+                    showUserUpdate={() => {
+                    setShowUserDialog(true);
+                }}/>
                 <Pane display="flex" width="100%" height='100%' border='default'>
                     <Pane width="20%" height='100%' border='default'>
                         <PortfolioCoins

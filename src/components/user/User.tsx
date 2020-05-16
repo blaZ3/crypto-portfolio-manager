@@ -10,10 +10,10 @@ import {
 import {Coin, User} from '../../models'
 import {getUser, saveUser} from '../../repositories/UserRepository'
 
-export default function UserDetails() {
+export default function UserDetails(props : any) {
 
     let [showUserDialog,
-        setShowUserDialog] = useState(false);
+        setShowUserDialog] = useState(props.showUserDialog);
 
     let [name,
         setName] = useState < String > ("");
@@ -28,9 +28,16 @@ export default function UserDetails() {
         setErrorMsg] = useState < String | undefined > (undefined);
 
     useEffect(() => {
+        setShowUserDialog(props.showUserDialog);
+    }, [props.showUserDialog])
+
+    useEffect(() => {
         getUser().then((user : User | undefined) => {
             if (user !== undefined) {
                 setShowUserDialog(false);
+                setName(user.name);
+                setCurrency(user.currency);
+                setCoin(user.defaultCoinSymbol);
             } else {
                 setShowUserDialog(true);
             }
@@ -70,12 +77,15 @@ export default function UserDetails() {
 
             <TextInputField
                 placeholder="Name"
+                value={name}
                 onChange={(e : FormEvent) => setName((e.target as HTMLInputElement).value.toUpperCase())}/>
             <TextInputField
                 placeholder="Currency: EUR, USD etc."
+                value={currency}
                 onChange={(e : FormEvent) => setCurrency((e.target as HTMLInputElement).value.toUpperCase())}/>
             <TextInputField
                 placeholder="Default coin: BTC, ETH etc."
+                value={coin}
                 onChange={(e : FormEvent) => setCoin((e.target as HTMLInputElement).value.toUpperCase())}/>
 
             <Button
