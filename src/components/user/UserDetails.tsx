@@ -34,10 +34,10 @@ export default function UserDetails(props : any) {
     useEffect(() => {
         getUser().then((user : User | undefined) => {
             if (user !== undefined) {
-                setShowUserDialog(false);
                 setName(user.name);
                 setCurrency(user.currency);
                 setCoin(user.defaultCoinSymbol);
+                setShowUserDialog(false);
             } else {
                 setShowUserDialog(true);
             }
@@ -56,6 +56,7 @@ export default function UserDetails(props : any) {
             };
             saveUser(user).then(() => {
                 setShowUserDialog(false);
+                props.userDetailsUpdated();
             }).catch((err : String) => {
                 setErrorMsg(err);
             });

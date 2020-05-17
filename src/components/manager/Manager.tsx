@@ -6,7 +6,7 @@ import PortfolioCoins from '../coins/Coins'
 import Portfolio from '../portfolio/Portfolio'
 import {Coin} from '../../models'
 
-import UserDetails from '../user/User'
+import UserDetails from '../user/UserDetails'
 
 export default function Manager() {
 
@@ -19,7 +19,11 @@ export default function Manager() {
     return (
         <Pane display="flex" width='100%' height='100%' justifyContent="center">
 
-            <UserDetails showUserDialog={showUserDialog}/>
+            <UserDetails
+                showUserDialog={showUserDialog}
+                userDetailsUpdated={() => {
+                setShowUserDialog(false);
+            }}/>
 
             <Pane display="flex" width='70%' height='100%' flexDirection='column'>
                 <Topbar
@@ -34,7 +38,7 @@ export default function Manager() {
                         }}/>
                     </Pane>
                     <Pane width="80%" height='100%' border='default'>
-                        <Portfolio selectedCoin={selectedCoin}/>
+                        {selectedCoin !== undefined && <Portfolio selectedCoin={selectedCoin}/>}
                     </Pane>
                 </Pane>
             </Pane>

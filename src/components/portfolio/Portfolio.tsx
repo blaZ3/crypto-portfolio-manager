@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState, FormEvent, useEffect} from 'react'
 import {
     Pane,
     Text,
@@ -11,16 +11,29 @@ import {
 
 export default function Portfolio(props : any) {
 
-    if (props.selectedCoin == undefined) {
-        return (
-            <div></div>
-        )
-    }
+    let [purchaseDate,
+        setPurchaseDate] = useState("");
+
+    let [purchaseAmount,
+        setPurchaseAmount] = useState(0.0);
+
+    let [purchasePrice,
+        setPurchasePrice] = useState(props.selectedCoin.buyPrice);
+
+    let [purchaseQuantity,
+        setPurchaseQuantity] = useState(0.0);
+
+    useEffect(() => {
+        setPurchasePrice(props.selectedCoin.buyPrice);
+    }, [props.selectedCoin.buyPrice]);
+
+    useEffect(() => {
+        // alert("Koi");
+    }, [purchaseAmount, purchasePrice]);
 
     return (
         <Pane display="flex" flexDirection="column">
             <Heading size={500} margin={minorScale(2)}>{props.selectedCoin.symbol}</Heading>
-
             <Pane
                 display="flex"
                 flex={1}
@@ -33,13 +46,19 @@ export default function Portfolio(props : any) {
                 <TextInput
                     placeholder="Amount including fees"
                     width={220}
-                    margin={minorScale(1)}/>
+                    margin={minorScale(1)}
+                    onChange={(e : FormEvent) => {
+                    setPurchaseAmount(Number((e.target as HTMLInputElement).value))
+                }}/>
                 <TextInput
-                    placeholder="Rate of purchase"
+                    placeholder="Purchase price"
                     width={220}
                     margin={minorScale(1)}
-                    value={props.selectedCoin.buyPrice}/>
-                <TextInput placeholder="Amount purchased" width={220} margin={minorScale(1)}/>
+                    value={purchasePrice}
+                    onChange={(e : FormEvent) => {
+                    setPurchasePrice(Number((e.target as HTMLInputElement).value))
+                }}/>
+                <TextInput placeholder="Quantity" width={220} margin={minorScale(1)}/>
                 <IconButton icon="plus"/>
             </Pane>
 
