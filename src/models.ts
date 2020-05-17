@@ -12,3 +12,10 @@ export interface User {
     currency : String,
     defaultCoinSymbol : String
 }
+
+export interface Purchase {
+    amount : Number,
+    price : Number,
+    quantity : Number,
+    date : String
+}

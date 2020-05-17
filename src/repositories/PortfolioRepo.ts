@@ -1,6 +1,7 @@
-import {Coin} from "../models";
+import {Coin, Purchase} from "../models";
 
 const KEY_PORTFOLIO = "PORTFOLIO";
+const KEY_PURCHASES = "PURCHASES";
 
 /**
  * load current porfolio form local storage
@@ -39,4 +40,50 @@ export function saveCurrentPortfolio(portfolio : Map < String, Coin >) : Promise
             reject();
         }
     })
+}
+
+/**
+ * Purchases are a map of coin to list of indvl purchases
+ */
+
+export function addCoinPurchase(coin : Coin, purchase : Purchase) : Promise < boolean > {
+    return new Promise < boolean > ((resolve, reject) => {
+        try {            
+            let purchasesData = localStorage.getItem(KEY_PURCHASES);
+            var purchasesMap = new Map < Coin,
+                any > ();
+            if (purchasesData != null) {
+                purchasesMap = new Map(JSON.parse(purchasesData));
+            }
+            var purchaseList = purchasesMap.get(coin);
+            if (purchaseList == null) {
+                purchaseList = [];
+            }
+            purchaseList.push(purchase);
+            purchasesMap.set(coin, purchaseList);
+            let purchaseStr = JSON.stringify(Array.from(purchasesMap.entries()));
+            localStorage.setItem(KEY_PURCHASES, purchaseStr);
+            resolve(true);
+        } catch (e) {
+            resolve(false);
+        }
+    });
+}
+
+export function getPurchases(coin : Coin) : Promise < Purchase[] > {
+    return new Promise < Purchase[] > ((resolve, reject) => {        
+        let purchaseMapData = localStorage.getItem(KEY_PURCHASES);
+        var purchases : Purchase[] = [];
+        if (purchaseMapData != null) {
+            let purchaseMap = new Map(JSON.parse(purchaseMapData));        
+            purchaseMap.forEach((value : any, key : any) => {                
+                if (key.symbol === coin.symbol) {
+                    value.forEach((item : any) => {
+                        purchases.push(item);
+                    });
+                }
+            });
+        }
+        resolve(purchases);
+    });
 }
