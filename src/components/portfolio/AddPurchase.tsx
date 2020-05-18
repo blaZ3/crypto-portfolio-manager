@@ -66,7 +66,8 @@ export default function AddPurchase(props : any) {
         };
         addCoinPurchase(props.coin, purchase).then((success) => {
             if (success) {
-                alert("Purchase added!");
+                props.onPurchaseAdded();
+                setPurchaseAmount(0.0);
             } else {
                 alert("Failed to add purchase!");
             }
@@ -97,6 +98,7 @@ export default function AddPurchase(props : any) {
                 placeholder="Amount including fees"
                 width={220}
                 margin={minorScale(1)}
+                value={purchaseAmount}
                 onChange={(e : FormEvent) => {
                 setPurchaseAmount(Number((e.target as HTMLInputElement).value))
             }}/>
