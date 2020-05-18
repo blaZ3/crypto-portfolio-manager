@@ -2,6 +2,7 @@ import React, {useState, FormEvent, useEffect} from 'react'
 import {
     Pane,
     Text,
+    Table,
     Heading,
     minorScale,
     TextInput,
@@ -29,21 +30,32 @@ export default function ListPurchases(props : any) {
 
     return (
         <Pane>
-            {purchases.map((purchase) => {
-                return <PurchaseItem purchase={purchase}/>
-            })}
-        </Pane>
-    )
-}
+            <Table>
+                <Table.Head>
+                    <Table.TextHeaderCell>
+                        Date
+                    </Table.TextHeaderCell>
+                    <Table.TextHeaderCell>
+                        Amount
+                    </Table.TextHeaderCell>
+                    <Table.TextHeaderCell>
+                        Price
+                    </Table.TextHeaderCell>
+                </Table.Head>
+                <Table.Body>
+                    {purchases.map((purchase, i) => {
+                        return <Table.Row key={i} isSelectable onSelect={() => alert(purchase.amount)}>
+                            <Table.TextCell>{purchase.date}</Table.TextCell>
+                            <Table.TextCell isNumber>{purchase.price}</Table.TextCell>
+                            <Table.TextCell isNumber>{purchase.amount}</Table.TextCell>
+                        </Table.Row>
 
-function PurchaseItem(props : any) {
-    let [purchase] = useState(props.purchase);
-    return (
-        <Pane display="flex" flexDirection="row">
-            <Text margin={minorScale(2)}>{purchase.date}</Text>
-            <Text margin={minorScale(2)}>{purchase.amount}</Text>
-            <Text margin={minorScale(2)}>{purchase.price}</Text>
-            <Text margin={minorScale(2)}>{purchase.quantity}</Text>
+                    })}
+                </Table.Body>
+            </Table>
+
+            {purchases.length < 1 && <Text padding={minorScale(2)}>No purchase yet!</Text>}
+
         </Pane>
     )
 }
