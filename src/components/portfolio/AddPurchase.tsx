@@ -12,6 +12,8 @@ import {
 import {addCoinPurchase} from '../../repositories/PortfolioRepo'
 import {Purchase} from '../../models'
 
+import {v4 as uuidv4} from 'uuid'
+
 export default function AddPurchase(props : any) {
     let [purchaseDate,
         setPurchaseDate] = useState("");
@@ -59,6 +61,7 @@ export default function AddPurchase(props : any) {
         }
 
         let purchase : Purchase = {
+            uuid: uuidv4(),
             amount: purchaseAmount,
             price: purchasePrice,
             quantity: purchaseQuantity,

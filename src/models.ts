@@ -14,6 +14,7 @@ export interface User {
 }
 
 export interface Purchase {
+    uuid: String,
     amount : Number,
     price : Number,
     quantity : Number,
