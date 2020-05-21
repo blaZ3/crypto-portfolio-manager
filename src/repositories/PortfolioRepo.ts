@@ -98,6 +98,7 @@ function updatePurchases(coin : String, purchases : Purchase[]) : Promise < bool
                 purchasesMap = new Map(JSON.parse(purchasesData));
             }
             purchasesMap.set(coin, purchases);
+            localStorage.setItem(KEY_PURCHASES, JSON.stringify(Array.from(purchasesMap.entries())));
             resolve(true);
         } catch (e) {
             reject();
@@ -105,17 +106,20 @@ function updatePurchases(coin : String, purchases : Purchase[]) : Promise < bool
     });
 }
 
-export function deletePurchase(coin : String, purchase : Purchase) : Promise < boolean > {
-    return new Promise < boolean > ((resolve, reject) => {
+export function removePurchase(coin : String, purchase : Purchase) : Promise < Purchase[] > {
+    return new Promise < Purchase[] > ((resolve, reject) => {
         let newPurchases : Purchase[] = [];
         getPurchases(coin).then((purchases) => {
             purchases.forEach((item) => {
                 if (item.uuid !== purchase.uuid) {
                     newPurchases.push(item);
                 }
-
                 updatePurchases(coin, newPurchases).then((success : boolean) => {
-                    resolve(success);
+                    if (success) {
+                        resolve(newPurchases);
+                    } else {
+                        reject();
+                    }
                 }).catch((e) => {
                     reject();
                 });

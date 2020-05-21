@@ -2,6 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {Pane, Text, Table, minorScale, IconButton} from 'evergreen-ui'
 
 import {Purchase} from '../../models'
+import {removePurchase} from '../../repositories/PortfolioRepo'
 
 export default function ListPurchases(props : any) {
 
@@ -12,9 +13,9 @@ export default function ListPurchases(props : any) {
         setPurchases(props.purchases);
     }, [props.purchases]);
 
-    let deletePurchase = (purchase : Purchase) => {        
-        if(window.confirm("Are you sure you want to delete purchase of " + purchase.amount)){
-            
+    let deletePurchase = (purchase : Purchase) => {
+        if (window.confirm("Are you sure you want to delete purchase of " + purchase.amount)) {
+            removePurchase(props.coin.symbol, purchase);
         }
     }
 
