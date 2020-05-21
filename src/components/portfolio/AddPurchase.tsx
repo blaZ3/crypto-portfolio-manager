@@ -1,13 +1,5 @@
 import React, {useState, FormEvent, useEffect} from 'react'
-import {
-    Pane,
-    Text,
-    Heading,
-    minorScale,
-    TextInput,
-    Button,
-    IconButton
-} from 'evergreen-ui'
+import {Pane, minorScale, TextInput, IconButton} from 'evergreen-ui'
 
 import {addCoinPurchase} from '../../repositories/PortfolioRepo'
 import {Purchase} from '../../models'
@@ -67,7 +59,7 @@ export default function AddPurchase(props : any) {
             quantity: purchaseQuantity,
             date: purchaseDate
         };
-        addCoinPurchase(props.coin, purchase).then((success) => {
+        addCoinPurchase(props.coin.symbol, purchase).then((success) => {
             if (success) {
                 props.onPurchaseAdded();
                 setPurchaseAmount(0.0);

@@ -1,7 +1,6 @@
-import React, {useState, FormEvent, useEffect} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Pane, Text, Table, minorScale, IconButton} from 'evergreen-ui'
 
-import {getPurchases} from '../../repositories/PortfolioRepo'
 import {Purchase} from '../../models'
 
 export default function ListPurchases(props : any) {
@@ -12,6 +11,16 @@ export default function ListPurchases(props : any) {
     useEffect(() => {
         setPurchases(props.purchases);
     }, [props.purchases]);
+
+    let deletePurchase = (purchase : Purchase) => {        
+        if(window.confirm("Are you sure you want to delete purchase of " + purchase.amount)){
+            
+        }
+    }
+
+    let editPurchase = (purchase : Purchase) => {
+        alert(purchase.uuid);
+    }
 
     return (
         <Pane>
@@ -32,14 +41,25 @@ export default function ListPurchases(props : any) {
                 </Table.Head>
                 <Table.Body>
                     {purchases.map((purchase, i) => {
-                        return <Table.Row key={i} isSelectable onSelect={() => alert(purchase.amount)}>
+                        return <Table.Row key={i}>
                             <Table.TextCell>{purchase.date}</Table.TextCell>
                             <Table.TextCell isNumber>{purchase.price}</Table.TextCell>
                             <Table.TextCell isNumber>{purchase.amount}</Table.TextCell>
                             <Table.TextCell>
                                 <Pane display="flex" flexDirection="row" justifyContent="center">
-                                    <IconButton margin={minorScale(2)} icon="trash" intent="none"/>
-                                    <IconButton margin={minorScale(2)} icon="edit" intent="none"/>
+                                    <IconButton
+                                        margin={minorScale(2)}
+                                        icon="trash"
+                                        intent="none"
+                                        onClick={() => {
+                                        deletePurchase(purchase);
+                                    }}/>
+                                    <IconButton
+                                        margin={minorScale(2)}
+                                        icon="edit"
+                                        onClick={() => {
+                                        editPurchase(purchase);
+                                    }}/>
                                 </Pane>
                             </Table.TextCell>
                         </Table.Row>

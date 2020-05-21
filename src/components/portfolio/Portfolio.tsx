@@ -16,7 +16,7 @@ export default function Portfolio(props : any) {
     }, [props.selectedCoin]);
 
     function loadPurchases(coin : Coin) {
-        getPurchases(coin).then((purchases) => {
+        getPurchases(coin.symbol).then((purchases) => {
             setPurchases(purchases);
         }).catch((err) => {
             alert("Error fetching purchases");

@@ -46,11 +46,11 @@ export function saveCurrentPortfolio(portfolio : Map < String, Coin >) : Promise
  * Purchases are a map of coin to list of indvl purchases
  */
 
-export function addCoinPurchase(coin : Coin, purchase : Purchase) : Promise < boolean > {
+export function addCoinPurchase(coin : String, purchase : Purchase) : Promise < boolean > {
     return new Promise < boolean > ((resolve, reject) => {
-        try {            
+        try {
             let purchasesData = localStorage.getItem(KEY_PURCHASES);
-            var purchasesMap = new Map < Coin,
+            var purchasesMap = new Map < String,
                 any > ();
             if (purchasesData != null) {
                 purchasesMap = new Map(JSON.parse(purchasesData));
@@ -65,19 +65,19 @@ export function addCoinPurchase(coin : Coin, purchase : Purchase) : Promise < bo
             localStorage.setItem(KEY_PURCHASES, purchaseStr);
             resolve(true);
         } catch (e) {
-            resolve(false);
+            reject();
         }
     });
 }
 
-export function getPurchases(coin : Coin) : Promise < Purchase[] > {
-    return new Promise < Purchase[] > ((resolve, reject) => {        
+export function getPurchases(coin : String) : Promise < Purchase[] > {
+    return new Promise < Purchase[] > ((resolve, reject) => {
         let purchaseMapData = localStorage.getItem(KEY_PURCHASES);
         var purchases : Purchase[] = [];
         if (purchaseMapData != null) {
-            let purchaseMap = new Map(JSON.parse(purchaseMapData));        
-            purchaseMap.forEach((value : any, key : any) => {                
-                if (key.symbol === coin.symbol) {
+            let purchaseMap = new Map(JSON.parse(purchaseMapData));
+            purchaseMap.forEach((value : any, key : any) => {
+                if (key === coin) {
                     value.forEach((item : any) => {
                         purchases.push(item);
                     });
@@ -85,5 +85,43 @@ export function getPurchases(coin : Coin) : Promise < Purchase[] > {
             });
         }
         resolve(purchases);
+    });
+}
+
+function updatePurchases(coin : String, purchases : Purchase[]) : Promise < boolean > {
+    return new Promise < boolean > ((resolve, reject) => {
+        try {
+            let purchasesData = localStorage.getItem(KEY_PURCHASES);
+            var purchasesMap = new Map < String,
+                any > ();
+            if (purchasesData != null) {
+                purchasesMap = new Map(JSON.parse(purchasesData));
+            }
+            purchasesMap.set(coin, purchases);
+            resolve(true);
+        } catch (e) {
+            reject();
+        }
+    });
+}
+
+export function deletePurchase(coin : String, purchase : Purchase) : Promise < boolean > {
+    return new Promise < boolean > ((resolve, reject) => {
+        let newPurchases : Purchase[] = [];
+        getPurchases(coin).then((purchases) => {
+            purchases.forEach((item) => {
+                if (item.uuid !== purchase.uuid) {
+                    newPurchases.push(item);
+                }
+
+                updatePurchases(coin, newPurchases).then((success : boolean) => {
+                    resolve(success);
+                }).catch((e) => {
+                    reject();
+                });
+            });
+        }).catch((err) => {
+            reject();
+        });
     });
 }
