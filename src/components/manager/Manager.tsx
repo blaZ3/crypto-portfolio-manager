@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react'
 import {Pane, Dialog, TextInputField, Button} from 'evergreen-ui'
 
 import Topbar from '../topbar/Topbar'
-import PortfolioCoins from '../coins/Coins'
+import ListCoins from '../coins/ListCoins'
 import Portfolio from '../portfolio/Portfolio'
 import {Coin} from '../../models'
 
@@ -32,7 +32,7 @@ export default function Manager() {
                 }}/>
                 <Pane display="flex" width="100%" height='100%' border='default'>
                     <Pane width="20%" height='100%' border='default'>
-                        <PortfolioCoins
+                        <ListCoins
                             onCoinSelected={(coin : Coin) => {
                             setSelectedCoin(coin);
                         }}/>

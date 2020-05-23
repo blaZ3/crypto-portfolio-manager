@@ -14,9 +14,10 @@ export interface User {
 }
 
 export interface Purchase {
-    uuid: String,
+    uuid : String,
     amount : Number,
     price : Number,
     quantity : Number,
-    date : String
+    date : String,
+    currency : String
 }

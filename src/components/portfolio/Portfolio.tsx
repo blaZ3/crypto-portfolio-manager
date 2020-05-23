@@ -4,15 +4,25 @@ import {Pane, Heading, minorScale} from 'evergreen-ui'
 import AddPurchase from './AddPurchase'
 import ListPurchases from './ListPurchases'
 import {getPurchases} from '../../repositories/PortfolioRepo'
-import {Purchase, Coin} from '../../models'
+import {getUser} from '../../repositories/UserRepository'
+import {Purchase, Coin, User} from '../../models'
 
 export default function Portfolio(props : any) {
-
+    let [currency,
+        setCurrency] = useState < String | undefined > (undefined);
     let [purchases,
         setPurchases] = useState < Purchase[] > ([]);
 
     useEffect(() => {
         loadPurchases(props.selectedCoin);
+    }, [props.selectedCoin]);
+
+    useEffect(() => {
+        getUser().then((user) => {
+            if (user !== undefined) {
+                setCurrency(user.currency)
+            }
+        });
     }, [props.selectedCoin]);
 
     function loadPurchases(coin : Coin) {
@@ -26,13 +36,19 @@ export default function Portfolio(props : any) {
     return (
         <Pane display="flex" flexDirection="column">
             <Heading size={500} margin={minorScale(2)}>{props.selectedCoin.symbol}</Heading>
-            <AddPurchase
+            {currency !== undefined && <AddPurchase
                 coin={props.selectedCoin}
+                currency={currency}
                 onPurchaseAdded={() => {
                 loadPurchases(props.selectedCoin);
-            }}/>
+            }}/>}
             <hr/>
-            <ListPurchases coin={props.selectedCoin} purchases={purchases}/>
+            <ListPurchases
+                coin={props.selectedCoin}
+                purchases={purchases}
+                onPurchasesUpdated={() => {
+                loadPurchases(props.selectedCoin);
+            }}/>
         </Pane>
     )
 }

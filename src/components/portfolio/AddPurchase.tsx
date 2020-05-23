@@ -57,7 +57,8 @@ export default function AddPurchase(props : any) {
             amount: purchaseAmount,
             price: purchasePrice,
             quantity: purchaseQuantity,
-            date: purchaseDate
+            date: purchaseDate,
+            currency: props.currency
         };
         addCoinPurchase(props.coin.symbol, purchase).then((success) => {
             if (success) {

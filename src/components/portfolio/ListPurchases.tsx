@@ -15,7 +15,13 @@ export default function ListPurchases(props : any) {
 
     let deletePurchase = (purchase : Purchase) => {
         if (window.confirm("Are you sure you want to delete purchase of " + purchase.amount)) {
-            removePurchase(props.coin.symbol, purchase);
+            removePurchase(props.coin.symbol, purchase).then((success : boolean) => {
+                if (success) {
+                    props.onPurchasesUpdated();
+                }
+            }).catch((err) => {
+                alert(err);
+            });
         }
     }
 

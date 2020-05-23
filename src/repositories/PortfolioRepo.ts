@@ -6,7 +6,7 @@ const KEY_PURCHASES = "PURCHASES";
 /**
  * load current porfolio form local storage
  */
-export function getCurrentPortfolio() : Map < String,
+export function getCoins() : Map < String,
 Coin > {
     let portfolio = new Map < String,
         Coin > ();
@@ -14,9 +14,11 @@ Coin > {
     let portfolioData = localStorage.getItem(KEY_PORTFOLIO);
     if (portfolioData != null) {
         let portfolioJson = JSON.parse(portfolioData);
-        portfolioJson.forEach((item : any) => {
-            portfolio.set(item.symbol, item);
-        })
+        portfolioJson
+            .sort()
+            .forEach((item : any) => {
+                portfolio.set(item.symbol, item);
+            })
     }
 
     return portfolio;
@@ -25,7 +27,7 @@ Coin > {
 /**
  * saves the given map of potofilio as a list to local storage
  */
-export function saveCurrentPortfolio(portfolio : Map < String, Coin >) : Promise < boolean > {
+export function saveCoins(portfolio : Map < String, Coin >) : Promise < boolean > {
     return new Promise < boolean > ((resolve, reject) => {
         let portfolioData : any[] = [];
         portfolio.forEach((value, key) => {
@@ -106,8 +108,8 @@ function updatePurchases(coin : String, purchases : Purchase[]) : Promise < bool
     });
 }
 
-export function removePurchase(coin : String, purchase : Purchase) : Promise < Purchase[] > {
-    return new Promise < Purchase[] > ((resolve, reject) => {
+export function removePurchase(coin : String, purchase : Purchase) : Promise < boolean > {
+    return new Promise < boolean > ((resolve, reject) => {
         let newPurchases : Purchase[] = [];
         getPurchases(coin).then((purchases) => {
             purchases.forEach((item) => {
@@ -115,11 +117,7 @@ export function removePurchase(coin : String, purchase : Purchase) : Promise < P
                     newPurchases.push(item);
                 }
                 updatePurchases(coin, newPurchases).then((success : boolean) => {
-                    if (success) {
-                        resolve(newPurchases);
-                    } else {
-                        reject();
-                    }
+                    resolve(success);
                 }).catch((e) => {
                     reject();
                 });

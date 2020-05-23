@@ -7,7 +7,7 @@ import {
     Button,
     Text
 } from 'evergreen-ui'
-import {Coin, User} from '../../models'
+import {User} from '../../models'
 import {getUser, saveUser} from '../../repositories/UserRepository'
 
 export default function UserDetails(props : any) {
