@@ -3,6 +3,7 @@ import {Pane, Heading, minorScale} from 'evergreen-ui'
 
 import AddPurchase from './AddPurchase'
 import ListPurchases from './ListPurchases'
+import PortfolioPerformance from './PortfolioPerformance'
 import {getPurchases} from '../../repositories/PortfolioRepo'
 import {getUser} from '../../repositories/UserRepository'
 import {Purchase, Coin, User} from '../../models'
@@ -36,13 +37,13 @@ export default function Portfolio(props : any) {
     return (
         <Pane display="flex" flexDirection="column">
             <Heading size={500} margin={minorScale(2)}>{props.selectedCoin.symbol}</Heading>
-            {currency !== undefined && <AddPurchase
+            <PortfolioPerformance purchases={purchases}/>
+             {currency !== undefined && <AddPurchase
                 coin={props.selectedCoin}
                 currency={currency}
                 onPurchaseAdded={() => {
                 loadPurchases(props.selectedCoin);
             }}/>}
-            <hr/>
             <ListPurchases
                 coin={props.selectedCoin}
                 purchases={purchases}

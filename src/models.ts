@@ -2,9 +2,9 @@ export interface Coin {
     name : String,
     symbol : String,
     currency : String,
-    buyPrice : Number,
-    sellPrice : Number,
-    spotPrice : Number
+    buyPrice : number,
+    sellPrice : number,
+    spotPrice : number
 }
 
 export interface User {
@@ -15,9 +15,9 @@ export interface User {
 
 export interface Purchase {
     uuid : String,
-    amount : Number,
-    price : Number,
-    quantity : Number,
+    amount : number,
+    price : number,
+    quantity : number,
     date : String,
     currency : String
 }
