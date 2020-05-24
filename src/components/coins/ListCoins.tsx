@@ -113,14 +113,14 @@ export default function ListCoins(props : any) {
                 </Pane>
                 <Text color="danger">{addCoinError !== undefined && addCoinError}</Text>
             </Pane>
-            <hr/> {coins !== undefined && getCoinsView(coins).map((coin) => {
+            <hr/> {coins !== undefined && getCoinsList(coins).map((coin) => {
                 return CoinView(coin, props.onCoinSelected)
             })}
         </div>
     )
 }
 
-function getCoinsView(coins : Map < String, Coin >) : Coin[] {
+function getCoinsList(coins : Map < String, Coin >) : Coin[] {
     let coinArr : Coin[] = [];
     coins.forEach((value : Coin, key : String) => {
         coinArr.push(value)
