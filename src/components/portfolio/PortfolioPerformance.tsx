@@ -10,6 +10,8 @@ export default function PortfolioPerformance(props : any) {
         number >> (new Map());
     let [totalCoins,
         setTotalCoins] = useState(0);
+    let [performace,
+        setPerformance] = useState(0);
 
     useEffect(() => {
         let tempSpendMap = new Map < String,
@@ -29,12 +31,14 @@ export default function PortfolioPerformance(props : any) {
             });
         setAmountSpend(tempSpendMap);
         setTotalCoins(tempTotalCoins);
+        // setPerformance(tempSpendMap)
+
     }, [props.purchases]);
 
     return (
         <Pane display="flex" flexDirection='row'>
             <Pane display="flex" flexDirection='column' flex={1} background="tint1">
-                <Text>Amount spent</Text>
+                <Heading size={300} marginTop="default">Amount spent</Heading>
                 {Array
                     .from(amountSpend.keys())
                     .map((key) => {
@@ -50,9 +54,11 @@ export default function PortfolioPerformance(props : any) {
                 flexDirection='column'
                 flex={1}
                 background="tint1">
-                <Text>Coin value</Text>
-                <Text margin={minorScale(2)}>{totalCoins} {props.coin.symbol}</Text>
-                <Text margin={minorScale(2)}>{totalCoins * props.coin.sellPrice} {props.coin.currency}</Text>
+                <Heading size={300} marginTop="default">Coin value</Heading>
+                <Text margin={minorScale(2)}>Quantity: {totalCoins}
+                    {props.coin.symbol}</Text>
+                <Text margin={minorScale(2)}>Current value: {totalCoins * props.coin.sellPrice}
+                    {props.coin.currency}</Text>
             </Pane>
         </Pane>
     )
