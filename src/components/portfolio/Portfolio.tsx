@@ -37,7 +37,7 @@ export default function Portfolio(props : any) {
     return (
         <Pane display="flex" flexDirection="column">
             <Heading size={500} margin={minorScale(2)}>{props.selectedCoin.symbol}</Heading>
-            {purchases.length > 0 && <PortfolioPerformance coin={props.selectedCoin} purchases={purchases}/>}
+            {purchases.length > 0 && <PortfolioPerformance user={props.user} coin={props.selectedCoin} purchases={purchases}/>}
             {currency !== undefined && <AddPurchase
                 coin={props.selectedCoin}
                 currency={currency}

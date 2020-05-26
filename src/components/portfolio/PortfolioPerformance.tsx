@@ -6,47 +6,41 @@ import {Purchase, Coin, User} from '../../models'
 export default function PortfolioPerformance(props : any) {
 
     let [amountSpend,
-            setAmountSpend] = useState < Map < String,
-        number >> (new Map());
+        setAmountSpend] = useState < number > (0.0);
     let [totalCoins,
         setTotalCoins] = useState(0);
     let [performace,
         setPerformance] = useState(0);
+    let [performanceColor,
+        setPerfColor] = useState("green");
 
     useEffect(() => {
-        let tempSpendMap = new Map < String,
-            number > ();
-        let tempTotalCoins = 0;
+        let tempAmountSpend = 0
+        let tempTotalCoins = 0
         props
             .purchases
             .forEach((purchase : Purchase) => {
-                let sum = tempSpendMap.get(purchase.currency);
-                if (sum === undefined) {
-                    tempSpendMap.set(purchase.currency, purchase.amount);
-                } else {
-                    tempSpendMap.set(purchase.currency, (sum + purchase.amount));
-                }
-
-                tempTotalCoins += purchase.quantity
+                tempAmountSpend = tempAmountSpend + purchase.amount
+                tempTotalCoins = tempTotalCoins + purchase.quantity
             });
-        setAmountSpend(tempSpendMap);
+        setAmountSpend(tempAmountSpend);
         setTotalCoins(tempTotalCoins);
-        // setPerformance(tempSpendMap)
-
+        setPerformance((tempTotalCoins * props.coin.sellPrice) - tempAmountSpend)
+        if (performace > 0) {
+            setPerfColor("green");
+        } else {
+            setPerfColor("red");
+        }
     }, [props.purchases]);
 
     return (
         <Pane display="flex" flexDirection='row'>
             <Pane display="flex" flexDirection='column' flex={1} background="tint1">
                 <Heading size={300} marginTop="default">Amount spent</Heading>
-                {Array
-                    .from(amountSpend.keys())
-                    .map((key) => {
-                        return <Pane>
-                            <Text margin={minorScale(2)}>{key}</Text>
-                            <Text margin={minorScale(2)}>{amountSpend.get(key)}</Text>
-                        </Pane>
-                    })}
+                <Pane>
+                    <Text margin={minorScale(2)}>{props.user.currency}</Text>
+                    <Text margin={minorScale(2)}>{amountSpend}</Text>
+                </Pane>
             </Pane>
             <Pane
                 marginLeft={minorScale(1)}
@@ -59,6 +53,7 @@ export default function PortfolioPerformance(props : any) {
                     {props.coin.symbol}</Text>
                 <Text margin={minorScale(2)}>Current value: {totalCoins * props.coin.sellPrice}
                     {props.coin.currency}</Text>
+                <Text color={performanceColor} margin={minorScale(2)}>{performace}</Text>
             </Pane>
         </Pane>
     )

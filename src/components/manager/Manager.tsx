@@ -4,17 +4,31 @@ import {Pane, Dialog, TextInputField, Button} from 'evergreen-ui'
 import Topbar from '../topbar/Topbar'
 import ListCoins from '../coins/ListCoins'
 import Portfolio from '../portfolio/Portfolio'
-import {Coin} from '../../models'
+import {Coin, User} from '../../models'
 
 import UserDetails from '../user/UserDetails'
+import {getUser} from '../../repositories/UserRepository'
 
 export default function Manager() {
+
+    let [user,
+        setUser] = useState < User | undefined > (undefined);
 
     let [selectedCoin,
         setSelectedCoin] = useState < Coin | undefined > (undefined);
 
     let [showUserDialog,
         setShowUserDialog] = useState(false);
+
+    useEffect(() => {
+        updateUser();
+    }, []);
+
+    function updateUser() {
+        getUser().then((user) => {
+            setUser(user);
+        }).catch((err : String) => {});
+    }
 
     return (
         <Pane display="flex" width='100%' height='100%' justifyContent="center">
@@ -23,10 +37,12 @@ export default function Manager() {
                 showUserDialog={showUserDialog}
                 userDetailsUpdated={() => {
                 setShowUserDialog(false);
+                updateUser();
             }}/>
 
             <Pane display="flex" width='70%' height='100%' flexDirection='column'>
                 <Topbar
+                    user={user}
                     showUserUpdate={() => {
                     setShowUserDialog(true);
                 }}/>
@@ -38,7 +54,7 @@ export default function Manager() {
                         }}/>
                     </Pane>
                     <Pane width="80%" height='100%' border='default'>
-                        {selectedCoin !== undefined && <Portfolio selectedCoin={selectedCoin}/>}
+                        {selectedCoin !== undefined && <Portfolio user={user} selectedCoin={selectedCoin}/>}
                     </Pane>
                 </Pane>
             </Pane>

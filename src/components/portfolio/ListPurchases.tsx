@@ -37,10 +37,13 @@ export default function ListPurchases(props : any) {
                         Date
                     </Table.TextHeaderCell>
                     <Table.TextHeaderCell>
+                        Price
+                    </Table.TextHeaderCell>
+                    <Table.TextHeaderCell>
                         Amount
                     </Table.TextHeaderCell>
                     <Table.TextHeaderCell>
-                        Price
+                        Quantity
                     </Table.TextHeaderCell>
                     <Table.TextHeaderCell>
                         Actions
@@ -52,6 +55,7 @@ export default function ListPurchases(props : any) {
                             <Table.TextCell>{purchase.date}</Table.TextCell>
                             <Table.TextCell isNumber>{purchase.price}</Table.TextCell>
                             <Table.TextCell isNumber>{purchase.amount}</Table.TextCell>
+                            <Table.TextCell isNumber>{purchase.quantity}</Table.TextCell>
                             <Table.TextCell>
                                 <Pane display="flex" flexDirection="row" justifyContent="center">
                                     <IconButton
@@ -60,12 +64,6 @@ export default function ListPurchases(props : any) {
                                         intent="none"
                                         onClick={() => {
                                         deletePurchase(purchase);
-                                    }}/>
-                                    <IconButton
-                                        margin={minorScale(2)}
-                                        icon="edit"
-                                        onClick={() => {
-                                        editPurchase(purchase);
                                     }}/>
                                 </Pane>
                             </Table.TextCell>
