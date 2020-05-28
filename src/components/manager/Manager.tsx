@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Pane, Dialog, TextInputField, Button} from 'evergreen-ui'
+import {Pane} from 'evergreen-ui'
 
 import Topbar from '../topbar/Topbar'
 import ListCoins from '../coins/ListCoins'
@@ -42,6 +42,8 @@ export default function Manager() {
 
             <Pane display="flex" width='70%' height='100%' flexDirection='column'>
                 <Topbar
+                    className="test"
+                    class="test"
                     user={user}
                     showUserUpdate={() => {
                     setShowUserDialog(true);

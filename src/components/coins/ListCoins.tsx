@@ -81,6 +81,17 @@ export default function ListCoins(props : any) {
         });
     }
 
+    let removeCoin = (coin : Coin) => {
+        if (window.confirm("Are you sure you want to remove " + coin.symbol)) {
+
+            
+
+            let newCoins = new Map(coins);
+            newCoins.delete(coin.symbol);
+            setCoins(newCoins);
+        }
+    }
+
     return (
         <div>
             <Pane alignItems="center" justifyContent="center" display="flex">
@@ -114,7 +125,9 @@ export default function ListCoins(props : any) {
                 <Text color="danger">{addCoinError !== undefined && addCoinError}</Text>
             </Pane>
             <hr/> {coins !== undefined && getCoinsList(coins).map((coin) => {
-                return CoinView(coin, props.onCoinSelected)
+                return CoinView(coin, props.onCoinSelected, (coin : Coin) => {
+                    removeCoin(coin);
+                })
             })}
         </div>
     )
@@ -128,7 +141,7 @@ function getCoinsList(coins : Map < String, Coin >) : Coin[] {
     return coinArr;
 }
 
-function CoinView(coin : Coin, onSelected : (coin : Coin) => void) {
+function CoinView(coin : Coin, onSelected : (coin : Coin) => void, onRemove : (coin : Coin) => void) {
     return (
         <Pane
             display="flex"
@@ -137,6 +150,7 @@ function CoinView(coin : Coin, onSelected : (coin : Coin) => void) {
             padding={minorScale(1)}
             background="greenTint"
             borderRadis={4}
+            border="default"
             style={{
             'cursor': 'pointer'
         }}
@@ -151,6 +165,14 @@ function CoinView(coin : Coin, onSelected : (coin : Coin) => void) {
                 <Text>Sell: {coin.sellPrice}
                     {coin.currency}
                 </Text>
+                <Pane flex={1} height={2} borderTop="default"/>
+                <Pane flex={1}>
+                    <Button
+                        appearance="minimal"
+                        onClick={() => {
+                        onRemove(coin);
+                    }}>Remove</Button>
+                </Pane>
             </Pane>
         </Pane>
     )
