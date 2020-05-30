@@ -1,3 +1,21 @@
+#Crypto portfolio manager
+
+This is an app to track your crypto investments and see how they perform.
+
+Features
+- [x] Add portfolio coins
+- [x] Add coin purchases
+- [x] See portfolio performance
+- [] See portfolio performance charts
+- [] More to come
+
+Please raise issue for new features.
+
+#NOTICE:
+##This is a project for educational purposes, do not use this for real life investments.
+
+---
+
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
 ## Available Scripts
