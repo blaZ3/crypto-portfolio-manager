@@ -12,7 +12,7 @@ Features
 Please raise issue for new features.
 
 # NOTICE:
-## This is a project for educational purposes, do not use this for real life investments.
+## This is a project for educational purposes, DO NOT use this for real life investments.
 
 ---
 
