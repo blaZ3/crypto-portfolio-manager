@@ -26,7 +26,7 @@ export default function PortfolioPerformance(props : any) {
         setAmountSpend(tempAmountSpend);
         setTotalCoins(tempTotalCoins);
         setPerformance((tempTotalCoins * props.coin.sellPrice) - tempAmountSpend)
-        if (performace > 0) {
+        if (performace > -1) {
             setPerfColor("green");
         } else {
             setPerfColor("red");
